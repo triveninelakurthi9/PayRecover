@@ -11,15 +11,33 @@ PayRecover is an autonomous, explainable AI agent that diagnoses failed payments
 
 > ⚠️ **Note:** The backend runs on Render's free tier, which spins down after inactivity. The first request after a period of inactivity may take **30–50 seconds** to wake up — this is expected, not a bug. Just wait and refresh.
 
+## 💡 Why This Exists
 
-## 📸 Dashboard Overview & Features
+Revenue loss from failed payments, abandoned checkouts, and failed subscription renewals rarely happens in one clean step — a payment degrades, a customer drops off mid-checkout, a saved card expires. Today, catching and recovering that revenue is largely manual. PayRecover closes this loop end-to-end: diagnose → decide → execute → audit — with strict safety guardrails at every step so an AI agent never moves money it shouldn't.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** FastAPI, Python
+- **Frontend:** React.js (Vite)
+- **Database:** SQLite
+- **Decision Logic:** Deterministic rules engine, LLM fallback (Gemini/OpenAI) for ambiguous case classification
+- **Payments Integration:** Razorpay Test-Mode Payment Links & Orders API
+- **Testing:** Pytest — 7/7 automated tests passing
+- **Deployment:** Frontend on Vercel, Backend on Render
+---
+
+## Dashboard Overview & Features
 
 - **Batch Performance Analytics:** Total Cases Processed, Amount at Risk (₹), Amount Recovered (₹), Recovery Rate %, Escalated Queue Count, and Average Time-to-Recovery.
-- **Root-Cause Taxonomy Engine:** Classifies error codes (EXPIRED_CARD, INSUFFICIENT_FUNDS, RISK_CHECK_FAILED, GATEWAY_TIMEOUT, CHECKOUT_ABANDONED) via direct lookup with LLM fallback for free-text messages.
-- **Deterministic Intervention Rules:** Strict stopping rules (max 3 attempts, 4h cooldown period, gated manual review for high-risk blocks).
-- **Hinglish Notification Generator:** Drafts short, contextual SMS, Email, and WhatsApp messages formatted for Indian checkout contexts.
-- **Explainable Audit Ledger:** Modal timeline inspecting step-by-step reasoning (Why Chosen, Rule Fired, Raw Payloads) for every transaction.
-- **Graceful Failure Handler:** Live demo button showing how API timeouts/LLM drops are safely handled without server crashes.
+- **Root-Cause Taxonomy Engine:** Classifies error codes (EXPIRED_CARD, INSUFFICIENT_FUNDS, RISK_CHECK_FAILED, GATEWAY_TIMEOUT, CHECKOUT_ABANDONED) via direct lookup, with LLM fallback for free-text or ambiguous messages.
+- **Deterministic Intervention Rules:** Strict stopping rules enforced in code — max 3 attempts per case, 4-hour cooldown between attempts, and gated manual review for high-risk blocks (zero automated money movement on those cases).
+- **Hinglish Notification Generator:** Drafts short, contextual SMS, Email, and WhatsApp recovery messages formatted for Indian checkout contexts.
+- **Explainable Audit Ledger:** A modal timeline for every transaction, showing step-by-step reasoning — why an action was chosen, which rule fired, and the raw payload behind it.
+- **Graceful Failure Handler:** A live demo button shows how API timeouts and LLM drops are caught and handled safely, without crashing the server.
+
+---
 
 ## 🏗️ Architecture Diagram
 
