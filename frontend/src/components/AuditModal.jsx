@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, ShieldCheck, ExternalLink, Clock, FileText, MessageSquare, Terminal } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function AuditModal({ caseId, onClose }) {
   const [caseDetail, setCaseDetail] = useState(null);
@@ -8,7 +9,7 @@ export default function AuditModal({ caseId, onClose }) {
   useEffect(() => {
     if (!caseId) return;
     setLoading(true);
-    fetch(`/api/cases/${caseId}`)
+    fetch(`${API_BASE_URL}/api/cases/${caseId}`)
       .then((res) => res.json())
       .then((data) => {
         setCaseDetail(data);

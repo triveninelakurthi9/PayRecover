@@ -5,6 +5,7 @@ import CasesTable from './components/CasesTable';
 import AuditModal from './components/AuditModal';
 import FailureDemoBanner from './components/FailureDemoBanner';
 import { ShieldCheck, RefreshCw, Layers } from 'lucide-react';
+import { API_BASE_URL } from './config';
 
 export default function App() {
   const [stats, setStats] = useState(null);
@@ -20,7 +21,7 @@ export default function App() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('/api/stats');
+      const res = await fetch(`${API_BASE_URL}/api/stats`);
       const data = await res.json();
       setStats(data);
     } catch (err) {
@@ -30,7 +31,7 @@ export default function App() {
 
   const fetchCases = async () => {
     try {
-      let url = '/api/cases?';
+      let url = `${API_BASE_URL}/api/cases?`;
       if (search) url += `search=${encodeURIComponent(search)}&`;
       if (categoryFilter) url += `category=${encodeURIComponent(categoryFilter)}&`;
       if (statusFilter) url += `status=${encodeURIComponent(statusFilter)}&`;
@@ -51,7 +52,7 @@ export default function App() {
   const handleRunBatch = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/run-batch', { method: 'POST' });
+      const res = await fetch(`${API_BASE_URL}/api/run-batch`, { method: 'POST' });
       const data = await res.json();
       console.log("Batch run complete", data);
       await fetchStats();
@@ -66,7 +67,7 @@ export default function App() {
   const handleTriggerFailureDemo = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/trigger-failure-demo?case_id=PAY-0042', { method: 'POST' });
+      const res = await fetch(`${API_BASE_URL}/api/trigger-failure-demo?case_id=PAY-0042`, { method: 'POST' });
       const data = await res.json();
       setFailureData(data);
       await fetchStats();
@@ -81,7 +82,7 @@ export default function App() {
   const handleResetSeed = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/reset-seed', { method: 'POST' });
+      const res = await fetch(`${API_BASE_URL}/api/reset-seed`, { method: 'POST' });
       setFailureData(null);
       await fetchStats();
       await fetchCases();
